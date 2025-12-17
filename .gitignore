@@ -110,7 +110,3 @@ generated/
 target/generated-sources/
 target/generated-test-sources/
 
-accounts_logs**
-kafka_**
-create_**
-test**

@@ -1,18 +1,19 @@
 package com.core.microservices.accounts.infrastructure.input;
 
 import com.core.microservices.accounts.application.input.port.AccountInputPort;
+import com.core.microservices.accounts.infrastructure.input.mapper.AccountDtoMapper;
 import com.core.microservices.accounts.infrastructure.input.rest.api.AccountsApi;
 import com.core.microservices.accounts.infrastructure.input.rest.dto.AccountRequest;
 import com.core.microservices.accounts.infrastructure.input.rest.dto.AccountResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-@Controller
+@RestController
 @RequiredArgsConstructor
 public class AccountController implements AccountsApi {
 

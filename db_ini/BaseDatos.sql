@@ -60,21 +60,3 @@ CREATE TABLE movements (
     INDEX idx_movement_date (date)
 );
 
--- Sample data for testing (as per requirements)
-INSERT INTO persons (name, gender, identification, address, phone) VALUES
-('Jose Lema', 'MALE', '1234567890', 'Otavalo sn y principal', '098254785'),
-('Marianela Montalvo', 'FEMALE', '0987654321', 'Amazonas y NNUU', '097548965'),
-('Juan Osorio', 'MALE', '1122334455', '13 junio y Equinoccial', '098874587');
-
-INSERT INTO customers (person_id, password, status) VALUES
-(1, '$2a$10$N9qo8uLOickgx2ZMRZoMye', TRUE),
-(2, '$2a$10$N9qo8uLOickgx2ZMRZoMye', TRUE),
-(3, '$2a$10$N9qo8uLOickgx2ZMRZoMye', TRUE);
-
-INSERT INTO accounts (number, type, initial_balance, current_balance, status, customer_id) VALUES
-('478758', 'Ahorro', 2000.00, 2000.00, TRUE, 1),
-('225487', 'Corriente', 100.00, 100.00, TRUE, 2),
-('495878', 'Ahorros', 0.00, 0.00, TRUE, 3),
-('496825', 'Ahorros', 540.00, 540.00, TRUE, 2),
-('585545', 'Corriente', 1000.00, 1000.00, TRUE, 1);
-

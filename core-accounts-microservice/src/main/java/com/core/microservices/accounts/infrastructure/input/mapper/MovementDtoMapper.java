@@ -1,4 +1,4 @@
-package com.core.microservices.accounts.infrastructure.input;
+package com.core.microservices.accounts.infrastructure.input.mapper;
 
 import com.core.microservices.accounts.domain.Movement;
 import com.core.microservices.accounts.infrastructure.input.rest.dto.MovementRequest;

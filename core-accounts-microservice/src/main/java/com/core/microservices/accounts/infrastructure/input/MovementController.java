@@ -1,6 +1,7 @@
 package com.core.microservices.accounts.infrastructure.input;
 
 import com.core.microservices.accounts.application.input.port.MovementInputPort;
+import com.core.microservices.accounts.infrastructure.input.mapper.MovementDtoMapper;
 import com.core.microservices.accounts.infrastructure.input.rest.api.MovementsApi;
 import com.core.microservices.accounts.infrastructure.input.rest.dto.MovementRequest;
 import com.core.microservices.accounts.infrastructure.input.rest.dto.MovementResponse;
@@ -8,11 +9,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-@Controller
+@RestController
 @RequiredArgsConstructor
 public class MovementController implements MovementsApi {
 

@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   mysql:
     image: mysql:9.4
@@ -28,7 +26,7 @@ services:
       ZOOKEEPER_CLIENT_PORT: ${ZOOKEEPER_PORT:-2181}
       ZOOKEEPER_TICK_TIME: 2000
     healthcheck:
-      test: ["CMD", "bash", "-c", "echo 'ruok' | nc localhost 2181"]
+      test: ["CMD", "bash", "-c", "echo ruok | nc localhost 2181"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -51,6 +49,7 @@ services:
       KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_AUTO_CREATE_TOPICS_ENABLE: true
+      KAFKA_LOG_RETENTION_HOURS: 168
     healthcheck:
       test: ["CMD", "kafka-broker-api-versions", "--bootstrap-server", "kafka:9092"]
       interval: 10s
@@ -73,26 +72,18 @@ services:
     ports:
       - "${CUSTOMERS_SERVICE_PORT:-8080}:8080"
     environment:
-      # Database Configuration
       SPRING_DATASOURCE_URL: ${DB_URL:-jdbc:mysql://mysql:3306/microservices_db?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC}
       SPRING_DATASOURCE_USERNAME: ${DB_USERNAME:-admin}
       SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD:-admin123}
-      
-      # Kafka Configuration
-      SPRING_KAFKA_BOOTSTRAP_SERVERS: ${KAFKA_BOOTSTRAP_SERVERS:-kafka:9092}
-      KAFKA_BOOTSTRAP_SERVERS: ${KAFKA_BOOTSTRAP_SERVERS:-kafka:9092}
-      KAFKA_CUSTOMER_TOPIC: ${KAFKA_CUSTOMER_TOPIC:-customer.events}
-      APP_KAFKA_CUSTOMER_TOPIC: ${KAFKA_CUSTOMER_TOPIC:-customer.events}
-      
-      # Spring Configuration
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: ${KAFKA_BOOTSTRAP_SERVERS}
+      KAFKA_BOOTSTRAP_SERVERS: ${KAFKA_BOOTSTRAP_SERVERS}
+      KAFKA_CUSTOMER_TOPIC: ${KAFKA_CUSTOMER_TOPIC}
+      APP_KAFKA_CUSTOMER_TOPIC: ${KAFKA_CUSTOMER_TOPIC}
+      SPRING_APPLICATION_NAME: ${SPRING_APPLICATION_NAME_CUSTOMERS}
+      SERVER_PORT: ${CUSTOMERS_SERVICE_PORT}
       SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE:-docker}
-      SERVER_PORT: 8080
-      
-      # Logging Configuration
       LOGGING_LEVEL_ROOT: ${LOG_LEVEL:-INFO}
       LOGGING_PATTERN_CONSOLE: ${LOG_PATTERN:-%d{yyyy-MM-dd HH:mm:ss} - %msg%n}
-      
-      # Actuator Configuration
       MANAGEMENT_ENDPOINTS_WEB_EXPOSURE_INCLUDE: ${MANAGEMENT_ENDPOINTS_WEB_EXPOSURE_INCLUDE:-health,info,metrics}
       MANAGEMENT_ENDPOINT_HEALTH_SHOW_DETAILS: ${MANAGEMENT_ENDPOINT_HEALTH_SHOW_DETAILS:-always}
     healthcheck:
@@ -120,25 +111,22 @@ services:
     ports:
       - "${ACCOUNTS_SERVICE_PORT:-8081}:8081"
     environment:
-      # Database Configuration
       SPRING_DATASOURCE_URL: ${DB_URL:-jdbc:mysql://mysql:3306/microservices_db?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC}
       SPRING_DATASOURCE_USERNAME: ${DB_USERNAME:-admin}
       SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD:-admin123}
-      
-      # Kafka Configuration
-      SPRING_KAFKA_BOOTSTRAP_SERVERS: ${KAFKA_BOOTSTRAP_SERVERS:-kafka:9092}
-      KAFKA_CUSTOMER_TOPIC: ${KAFKA_CUSTOMER_TOPIC:-customer.events}
-      KAFKA_CONSUMER_GROUP_ID: ${KAFKA_CONSUMER_GROUP_ID:-accounts-service}
-      
-      # Spring Configuration
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: ${KAFKA_BOOTSTRAP_SERVERS}
+      KAFKA_BOOTSTRAP_SERVERS: ${KAFKA_BOOTSTRAP_SERVERS}
+      KAFKA_CUSTOMER_TOPIC: ${KAFKA_CUSTOMER_TOPIC}
+      SPRING_KAFKA_CONSUMER_GROUP_ID: ${SPRING_KAFKA_CONSUMER_GROUP_ID}
+      SPRING_APPLICATION_NAME: ${SPRING_APPLICATION_NAME_ACCOUNTS}
+      SERVER_PORT: ${ACCOUNTS_SERVICE_PORT}
+      APP_EXTERNAL_SERVICES_CUSTOMERS_SERVICE_URL: ${CUSTOMERS_SERVICE_URL}
+      APP_EXTERNAL_SERVICES_CUSTOMERS_SERVICE_TIMEOUT: ${CUSTOMERS_SERVICE_TIMEOUT}
+      APP_EXTERNAL_SERVICES_CUSTOMERS_SERVICE_RETRY_ATTEMPTS: ${CUSTOMERS_SERVICE_RETRY}
+      APP_KAFKA_CUSTOMER_TOPIC: ${KAFKA_CUSTOMER_TOPIC}
       SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE:-docker}
-      SERVER_PORT: 8081
-      
-      # Logging Configuration
       LOGGING_LEVEL_ROOT: ${LOG_LEVEL:-INFO}
       LOGGING_PATTERN_CONSOLE: ${LOG_PATTERN:-%d{yyyy-MM-dd HH:mm:ss} - %msg%n}
-      
-      # Actuator Configuration
       MANAGEMENT_ENDPOINTS_WEB_EXPOSURE_INCLUDE: ${MANAGEMENT_ENDPOINTS_WEB_EXPOSURE_INCLUDE:-health,info,metrics}
       MANAGEMENT_ENDPOINT_HEALTH_SHOW_DETAILS: ${MANAGEMENT_ENDPOINT_HEALTH_SHOW_DETAILS:-always}
     healthcheck:

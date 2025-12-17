@@ -11,7 +11,6 @@
     <packaging>pom</packaging>
 
     <name>Core Microservices Challenge</name>
-    <description>Proyecto multi-módulo para pruebas locales</description>
 
     <!-- Gestión de dependencias comunes -->
     <dependencyManagement>

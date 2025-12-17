@@ -8,7 +8,7 @@ info:
 
 servers:
   - url: http://localhost:8080
-    description: Local development server
+    description: API for managing customers and persons
 
 paths:
   /api/v1/customers:
