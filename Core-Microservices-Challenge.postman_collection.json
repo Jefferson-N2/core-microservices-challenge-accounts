@@ -1,15 +1,15 @@
 {
 	"info": {
-		"_postman_id": "b78dc02e-9f45-4bfc-963f-28fa025b4d40",
-		"name": "Core Microservices Challenge",
-		"description": "Complete API testing collection for customers and accounts microservices with Kafka async communication",
+		"_postman_id": "355bf5e2-fcc1-4338-bce8-8dfb75f6679f",
+		"name": "Core Microservices Challenge - Prueba Técnica",
+		"description": "Colección de pruebas para la arquitectura de microservicios - Nivel Senior\n\nImplementa todas las funcionalidades F1-F7:\n- F1: CRUD Completo (Customers, Accounts, Movements)\n- F2: Registro de movimientos con reglas de negocio\n- F3: Validación de saldo insuficiente\n- F4: Reportes de estado de cuenta\n- F5: Pruebas unitarias\n- F6: Pruebas de integración\n- F7: Despliegue con Docker",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "16893698",
-		"_collection_link": "https://dark-rocket-831531.postman.co/workspace/52ce96e7-0580-4b5d-af86-e4eed7d496b2/collection/16893698-b78dc02e-9f45-4bfc-963f-28fa025b4d40?action=share&source=collection_link&creator=16893698"
+		"_collection_link": "https://dark-rocket-831531.postman.co/workspace/52ce96e7-0580-4b5d-af86-e4eed7d496b2/collection/16893698-355bf5e2-fcc1-4338-bce8-8dfb75f6679f?action=share&source=collection_link&creator=16893698"
 	},
 	"item": [
 		{
-			"name": "Customers Microservice",
+			"name": "1. Customers Management",
 			"item": [
 				{
 					"name": "Create Customer - Jose Lema",
@@ -23,12 +23,12 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"name\": \"Jose Lema\",\n  \"gender\": \"MALE\",\n  \"identification\": \"44411111144\",\n  \"address\": \"Otavalo sn y principal\",\n  \"phone\": \"098234785\",\n  \"password\": \"1234\",\n  \"status\": true\n}"
+							"raw": "{\n  \"name\": \"Jose Lema\",\n  \"gender\": \"MALE\",\n  \"identification\": \"1234567890\",\n  \"address\": \"Otavalo sn y principal\",\n  \"phone\": \"098254785\",\n  \"password\": \"1234\",\n  \"status\": true\n}"
 						},
 						"url": {
-							"raw": "{{customers_base_url}}/api/v1/customers",
+							"raw": "{{customers_url}}/api/v1/customers",
 							"host": [
-								"{{customers_base_url}}"
+								"{{customers_url}}"
 							],
 							"path": [
 								"api",
@@ -51,12 +51,12 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"name\": \"Marianela Montalvo\",\n  \"gender\": \"FEMALE\",\n  \"identification\": \"098k454321\",\n  \"address\": \"Amazonas y NNUU\",\n  \"phone\": \"097548965\",\n  \"password\": \"5678\",\n  \"status\": true\n}"
+							"raw": "{\n  \"name\": \"Marianela Montalvo\",\n  \"gender\": \"FEMALE\",\n  \"identification\": \"0987654321\",\n  \"address\": \"Amazonas y NNUU\",\n  \"phone\": \"097548965\",\n  \"password\": \"5678\",\n  \"status\": true\n}"
 						},
 						"url": {
-							"raw": "{{customers_base_url}}/api/v1/customers",
+							"raw": "{{customers_url}}/api/v1/customers",
 							"host": [
-								"{{customers_base_url}}"
+								"{{customers_url}}"
 							],
 							"path": [
 								"api",
@@ -82,9 +82,9 @@
 							"raw": "{\n  \"name\": \"Juan Osorio\",\n  \"gender\": \"MALE\",\n  \"identification\": \"1122334455\",\n  \"address\": \"13 junio y Equinoccial\",\n  \"phone\": \"098874587\",\n  \"password\": \"1245\",\n  \"status\": true\n}"
 						},
 						"url": {
-							"raw": "{{customers_base_url}}/api/v1/customers",
+							"raw": "{{customers_url}}/api/v1/customers",
 							"host": [
-								"{{customers_base_url}}"
+								"{{customers_url}}"
 							],
 							"path": [
 								"api",
@@ -101,9 +101,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{customers_base_url}}/api/v1/customers",
+							"raw": "{{customers_url}}/api/v1/customers",
 							"host": [
-								"{{customers_base_url}}"
+								"{{customers_url}}"
 							],
 							"path": [
 								"api",
@@ -120,15 +120,36 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{customers_base_url}}/api/v1/customers/1",
+							"raw": "{{customers_url}}/api/v1/customers/{{customer_id}}",
 							"host": [
-								"{{customers_base_url}}"
+								"{{customers_url}}"
 							],
 							"path": [
 								"api",
 								"v1",
 								"customers",
-								"1"
+								"{{customer_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Customer by Identification",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{customers_url}}/api/v1/customers/identification/{{customer_identification}}",
+							"host": [
+								"{{customers_url}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"customers",
+								"identification",
+								"{{customer_identification}}"
 							]
 						}
 					},
@@ -146,18 +167,18 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"name\": \"Jose Lema Updated\",\n  \"gender\": \"MALE\",\n  \"identification\": \"1234567890\",\n  \"address\": \"Otavalo update principal - Updated\",\n  \"phone\": \"098254785\",\n  \"password\": \"1234\",\n  \"status\": true\n}"
+							"raw": "{\n  \"name\": \"Jose Lema Updated\",\n  \"gender\": \"MALE\",\n  \"identification\": \"1234567890\",\n  \"address\": \"Otavalo sn y principal - Updated\",\n  \"phone\": \"098254785\",\n  \"password\": \"1234\",\n  \"status\": true\n}"
 						},
 						"url": {
-							"raw": "{{customers_base_url}}/api/v1/customers/1",
+							"raw": "{{customers_url}}/api/v1/customers/{{customer_id}}",
 							"host": [
-								"{{customers_base_url}}"
+								"{{customers_url}}"
 							],
 							"path": [
 								"api",
 								"v1",
 								"customers",
-								"1"
+								"{{customer_id}}"
 							]
 						}
 					},
@@ -169,15 +190,15 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{customers_base_url}}/api/v1/customers/12",
+							"raw": "{{customers_url}}/api/v1/customers/{{customer_id}}",
 							"host": [
-								"{{customers_base_url}}"
+								"{{customers_url}}"
 							],
 							"path": [
 								"api",
 								"v1",
 								"customers",
-								"12"
+								"{{customer_id}}"
 							]
 						}
 					},
@@ -186,10 +207,10 @@
 			]
 		},
 		{
-			"name": "Accounts Microservice",
+			"name": "2. Accounts Management",
 			"item": [
 				{
-					"name": "Create Account - Jose Lema Savings",
+					"name": "Create Account - Jose Lema Ahorros",
 					"request": {
 						"method": "POST",
 						"header": [
@@ -200,12 +221,12 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"type\": \"Ahorros\",\n  \"initialBalance\": 2000.00,\n  \"identification\": \"098k454321\"\n}"
+							"raw": "{\n  \"type\": \"Ahorros\",\n  \"initialBalance\": 2000.00,\n  \"identification\": \"1234567890\"\n}"
 						},
 						"url": {
-							"raw": "{{accounts_base_url}}/api/v1/accounts",
+							"raw": "{{accounts_url}}/api/v1/accounts",
 							"host": [
-								"{{accounts_base_url}}"
+								"{{accounts_url}}"
 							],
 							"path": [
 								"api",
@@ -217,7 +238,7 @@
 					"response": []
 				},
 				{
-					"name": "Create Account - Marianela Montalvo Checking",
+					"name": "Create Account - Marianela Corriente",
 					"request": {
 						"method": "POST",
 						"header": [
@@ -228,12 +249,12 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"type\": \"Corriente\",\n  \"initialBalance\": 100.00,\n  \"identification\": \"12356390\"\n}"
+							"raw": "{\n  \"type\": \"Corriente\",\n  \"initialBalance\": 100.00,\n  \"identification\": \"0987654321\"\n}"
 						},
 						"url": {
-							"raw": "{{accounts_base_url}}/api/v1/accounts",
+							"raw": "{{accounts_url}}/api/v1/accounts",
 							"host": [
-								"{{accounts_base_url}}"
+								"{{accounts_url}}"
 							],
 							"path": [
 								"api",
@@ -245,7 +266,7 @@
 					"response": []
 				},
 				{
-					"name": "Create Account - Juan Osorio Savings",
+					"name": "Create Account - Juan Ahorros",
 					"request": {
 						"method": "POST",
 						"header": [
@@ -256,12 +277,12 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"type\": \"Ahorros\",\n  \"initialBalance\": 0.00,\n  \"customerIdentification\": \"1122334455\"\n}"
+							"raw": "{\n  \"type\": \"Ahorros\",\n  \"initialBalance\": 0.00,\n  \"identification\": \"1122334455\"\n}"
 						},
 						"url": {
-							"raw": "{{accounts_base_url}}/api/v1/accounts",
+							"raw": "{{accounts_url}}/api/v1/accounts",
 							"host": [
-								"{{accounts_base_url}}"
+								"{{accounts_url}}"
 							],
 							"path": [
 								"api",
@@ -273,7 +294,7 @@
 					"response": []
 				},
 				{
-					"name": "Create Account - Marianela Montalvo Second Savings",
+					"name": "Create Account - Marianela Ahorros 2",
 					"request": {
 						"method": "POST",
 						"header": [
@@ -284,12 +305,12 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"type\": \"Ahorros\",\n  \"initialBalance\": 540.00,\n  \"customerIdentification\": \"0987654321\"\n}"
+							"raw": "{\n  \"type\": \"Ahorros\",\n  \"initialBalance\": 540.00,\n  \"identification\": \"0987654321\"\n}"
 						},
 						"url": {
-							"raw": "{{accounts_base_url}}/api/v1/accounts",
+							"raw": "{{accounts_url}}/api/v1/accounts",
 							"host": [
-								"{{accounts_base_url}}"
+								"{{accounts_url}}"
 							],
 							"path": [
 								"api",
@@ -301,7 +322,7 @@
 					"response": []
 				},
 				{
-					"name": "Create Account - Jose Lema Checking",
+					"name": "Create Account - Jose Corriente",
 					"request": {
 						"method": "POST",
 						"header": [
@@ -312,12 +333,12 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"type\": \"Corriente\",\n  \"initialBalance\": 1000.00,\n  \"customerIdentification\": \"1234567890\"\n}"
+							"raw": "{\n  \"type\": \"Corriente\",\n  \"initialBalance\": 1000.00,\n  \"identification\": \"1234567890\"\n}"
 						},
 						"url": {
-							"raw": "{{accounts_base_url}}/api/v1/accounts",
+							"raw": "{{accounts_url}}/api/v1/accounts",
 							"host": [
-								"{{accounts_base_url}}"
+								"{{accounts_url}}"
 							],
 							"path": [
 								"api",
@@ -334,9 +355,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{accounts_base_url}}/api/v1/accounts",
+							"raw": "{{accounts_url}}/api/v1/accounts",
 							"host": [
-								"{{accounts_base_url}}"
+								"{{accounts_url}}"
 							],
 							"path": [
 								"api",
@@ -353,15 +374,15 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{accounts_base_url}}/api/v1/accounts/2",
+							"raw": "{{accounts_url}}/api/v1/accounts/{{account_id}}",
 							"host": [
-								"{{accounts_base_url}}"
+								"{{accounts_url}}"
 							],
 							"path": [
 								"api",
 								"v1",
 								"accounts",
-								"2"
+								"{{account_id}}"
 							]
 						}
 					},
@@ -379,18 +400,18 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"type\": \"Ahorros\",\n    \"balance\": 10.50,\n    \"status\": true,\n    \"identification\": \"949766\"\n}"
+							"raw": "{\n  \"type\": \"Corriente\",\n  \"initialBalance\": 1500.00,\n  \"identification\": \"1234567890\"\n}"
 						},
 						"url": {
-							"raw": "{{accounts_base_url}}/api/v1/accounts/3",
+							"raw": "{{accounts_url}}/api/v1/accounts/{{account_id}}",
 							"host": [
-								"{{accounts_base_url}}"
+								"{{accounts_url}}"
 							],
 							"path": [
 								"api",
 								"v1",
 								"accounts",
-								"3"
+								"{{account_id}}"
 							]
 						}
 					},
@@ -402,15 +423,15 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{accounts_base_url}}/api/v1/accounts/2",
+							"raw": "{{accounts_url}}/api/v1/accounts/{{account_id}}",
 							"host": [
-								"{{accounts_base_url}}"
+								"{{accounts_url}}"
 							],
 							"path": [
 								"api",
 								"v1",
 								"accounts",
-								"2"
+								"{{account_id}}"
 							]
 						}
 					},
@@ -419,10 +440,10 @@
 			]
 		},
 		{
-			"name": "Movements",
+			"name": "3. Movements Management",
 			"item": [
 				{
-					"name": "Movement - Debit 575 (Jose Lema Account)",
+					"name": "Movement - Retiro Jose Lema (575)",
 					"request": {
 						"method": "POST",
 						"header": [
@@ -433,12 +454,12 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"type\": \"Debito\",\n  \"value\": 0.500,\n  \"numberAccount\": \"949766\",\n  \"description\": \"Retiro de 575\"\n}"
+							"raw": "{\n  \"type\": \"Debito\",\n  \"value\": 575.00,\n  \"numberAccount\": \"{{jose_account_number}}\",\n  \"description\": \"Retiro de 575\"\n}"
 						},
 						"url": {
-							"raw": "{{accounts_base_url}}/api/v1/movements",
+							"raw": "{{accounts_url}}/api/v1/movements",
 							"host": [
-								"{{accounts_base_url}}"
+								"{{accounts_url}}"
 							],
 							"path": [
 								"api",
@@ -450,7 +471,7 @@
 					"response": []
 				},
 				{
-					"name": "Movement - Credit 600 (Marianela Montalvo Account)",
+					"name": "Movement - Deposito Marianela (600)",
 					"request": {
 						"method": "POST",
 						"header": [
@@ -461,12 +482,12 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"type\": \"Credito\",\n  \"value\": 600.00,\n  \"numberAccount\": \"225487\",\n  \"description\": \"Depósito de 600\"\n}"
+							"raw": "{\n  \"type\": \"Credito\",\n  \"value\": 600.00,\n  \"numberAccount\": \"{{marianela_account_number}}\",\n  \"description\": \"Depósito de 600\"\n}"
 						},
 						"url": {
-							"raw": "{{accounts_base_url}}/api/v1/movements",
+							"raw": "{{accounts_url}}/api/v1/movements",
 							"host": [
-								"{{accounts_base_url}}"
+								"{{accounts_url}}"
 							],
 							"path": [
 								"api",
@@ -478,7 +499,7 @@
 					"response": []
 				},
 				{
-					"name": "Movement - Credit 150 (Juan Osorio Account)",
+					"name": "Movement - Deposito Juan (150)",
 					"request": {
 						"method": "POST",
 						"header": [
@@ -489,12 +510,12 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"type\": \"Credito\",\n  \"value\": 150.00,\n  \"numberAccount\": \"495878\",\n  \"description\": \"Depósito de 150\"\n}"
+							"raw": "{\n  \"type\": \"Credito\",\n  \"value\": 150.00,\n  \"numberAccount\": \"{{juan_account_number}}\",\n  \"description\": \"Depósito de 150\"\n}"
 						},
 						"url": {
-							"raw": "{{accounts_base_url}}/api/v1/movements",
+							"raw": "{{accounts_url}}/api/v1/movements",
 							"host": [
-								"{{accounts_base_url}}"
+								"{{accounts_url}}"
 							],
 							"path": [
 								"api",
@@ -506,7 +527,7 @@
 					"response": []
 				},
 				{
-					"name": "Movement - Debit 540 (Marianela Montalvo Second Account)",
+					"name": "Movement - Retiro Marianela (540)",
 					"request": {
 						"method": "POST",
 						"header": [
@@ -517,12 +538,12 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"type\": \"Debito\",\n  \"value\": 540.00,\n  \"numberAccount\": \"496825\",\n  \"description\": \"Retiro de 540\"\n}"
+							"raw": "{\n  \"type\": \"Debito\",\n  \"value\": 540.00,\n  \"numberAccount\": \"{{marianela_account2_number}}\",\n  \"description\": \"Retiro de 540\"\n}"
 						},
 						"url": {
-							"raw": "{{accounts_base_url}}/api/v1/movements",
+							"raw": "{{accounts_url}}/api/v1/movements",
 							"host": [
-								"{{accounts_base_url}}"
+								"{{accounts_url}}"
 							],
 							"path": [
 								"api",
@@ -534,7 +555,7 @@
 					"response": []
 				},
 				{
-					"name": "Movement - Insufficient Balance Test",
+					"name": "Movement - Saldo Insuficiente (F3)",
 					"request": {
 						"method": "POST",
 						"header": [
@@ -545,12 +566,12 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n  \"type\": \"Debito\",\n  \"value\": 1000.00,\n  \"numberAccount\": \"495878\",\n  \"description\": \"Test insufficient balance\"\n}"
+							"raw": "{\n  \"type\": \"Debito\",\n  \"value\": 5000.00,\n  \"numberAccount\": \"{{juan_account_number}}\",\n  \"description\": \"Intento de retiro con saldo insuficiente\"\n}"
 						},
 						"url": {
-							"raw": "{{accounts_base_url}}/api/v1/movements",
+							"raw": "{{accounts_url}}/api/v1/movements",
 							"host": [
-								"{{accounts_base_url}}"
+								"{{accounts_url}}"
 							],
 							"path": [
 								"api",
@@ -567,9 +588,9 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{accounts_base_url}}/api/v1/movements",
+							"raw": "{{accounts_url}}/api/v1/movements",
 							"host": [
-								"{{accounts_base_url}}"
+								"{{accounts_url}}"
 							],
 							"path": [
 								"api",
@@ -586,15 +607,15 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{accounts_base_url}}/api/v1/movements/3",
+							"raw": "{{accounts_url}}/api/v1/movements/{{movement_id}}",
 							"host": [
-								"{{accounts_base_url}}"
+								"{{accounts_url}}"
 							],
 							"path": [
 								"api",
 								"v1",
 								"movements",
-								"3"
+								"{{movement_id}}"
 							]
 						}
 					},
@@ -612,18 +633,18 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"accountId\": 3,\n    \"type\": \"Debito\",\n    \"value\": 500.00,\n    \"numberAccount\": \"47875xx8\",\n    \"description\": \"Retiro actualizado de 500\"\n}"
+							"raw": "{\n  \"type\": \"Credito\",\n  \"value\": 200.00,\n  \"numberAccount\": \"{{jose_account_number}}\",\n  \"description\": \"Depósito actualizado\"\n}"
 						},
 						"url": {
-							"raw": "{{accounts_base_url}}/api/v1/movements/1",
+							"raw": "{{accounts_url}}/api/v1/movements/{{movement_id}}",
 							"host": [
-								"{{accounts_base_url}}"
+								"{{accounts_url}}"
 							],
 							"path": [
 								"api",
 								"v1",
 								"movements",
-								"1"
+								"{{movement_id}}"
 							]
 						}
 					},
@@ -635,15 +656,15 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{accounts_base_url}}/api/v1/movements/11000",
+							"raw": "{{accounts_url}}/api/v1/movements/{{movement_id}}",
 							"host": [
-								"{{accounts_base_url}}"
+								"{{accounts_url}}"
 							],
 							"path": [
 								"api",
 								"v1",
 								"movements",
-								"11000"
+								"{{movement_id}}"
 							]
 						}
 					},
@@ -652,53 +673,23 @@
 			]
 		},
 		{
-			"name": "Reports (F4)",
+			"name": "4. Reports (F4)",
 			"item": [
 				{
-					"name": "Account Statement Report - JSON",
+					"name": "Report - Jose Lema (JSON)",
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{accounts_base_url}}/api/v1/reports/1?startDate=2020-01-01&endDate=2024-12-31",
+							"raw": "{{accounts_url}}/api/v1/reports/{{jose_customer_id}}?startDate=2024-01-01&endDate=2024-12-31&format=json",
 							"host": [
-								"{{accounts_base_url}}"
+								"{{accounts_url}}"
 							],
 							"path": [
 								"api",
 								"v1",
 								"reports",
-								"1"
-							],
-							"query": [
-								{
-									"key": "startDate",
-									"value": "2020-01-01"
-								},
-								{
-									"key": "endDate",
-									"value": "2024-12-31"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "Account Statement Report - Excel",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{accounts_base_url}}/api/v1/reports/1?startDate=2024-01-01&endDate=2026-12-31",
-							"host": [
-								"{{accounts_base_url}}"
-							],
-							"path": [
-								"api",
-								"v1",
-								"reports",
-								"1"
+								"{{jose_customer_id}}"
 							],
 							"query": [
 								{
@@ -707,49 +698,46 @@
 								},
 								{
 									"key": "endDate",
-									"value": "2026-12-31"
+									"value": "2024-12-31"
+								},
+								{
+									"key": "format",
+									"value": "json"
 								}
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "Health Checks",
-			"item": [
-				{
-					"name": "Customers Health",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{customers_base_url}}/actuator/health",
-							"host": [
-								"{{customers_base_url}}"
-							],
-							"path": [
-								"actuator",
-								"health"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "Accounts Health",
+					"name": "Report - Marianela Montalvo (JSON)",
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{accounts_base_url}}/actuator/health",
+							"raw": "{{accounts_url}}/api/v1/reports/{{marianela_customer_id}}?startDate=2024-02-01&endDate=2024-02-28&format=json",
 							"host": [
-								"{{accounts_base_url}}"
+								"{{accounts_url}}"
 							],
 							"path": [
-								"actuator",
-								"health"
+								"api",
+								"v1",
+								"reports",
+								"{{marianela_customer_id}}"
+							],
+							"query": [
+								{
+									"key": "startDate",
+									"value": "2024-02-01"
+								},
+								{
+									"key": "endDate",
+									"value": "2024-02-28"
+								},
+								{
+									"key": "format",
+									"value": "json"
+								}
 							]
 						}
 					},
@@ -760,12 +748,69 @@
 	],
 	"variable": [
 		{
-			"key": "customers_base_url",
-			"value": "http://localhost:8080"
+			"key": "customers_url",
+			"value": "http://localhost:8080",
+			"type": "string"
 		},
 		{
-			"key": "accounts_base_url",
-			"value": "http://localhost:8081"
+			"key": "accounts_url",
+			"value": "http://localhost:8081",
+			"type": "string"
+		},
+		{
+			"key": "customer_id",
+			"value": "1",
+			"type": "string"
+		},
+		{
+			"key": "customer_identification",
+			"value": "1234567890",
+			"type": "string"
+		},
+		{
+			"key": "account_id",
+			"value": "1",
+			"type": "string"
+		},
+		{
+			"key": "movement_id",
+			"value": "1",
+			"type": "string"
+		},
+		{
+			"key": "jose_customer_id",
+			"value": "1",
+			"type": "string"
+		},
+		{
+			"key": "marianela_customer_id",
+			"value": "2",
+			"type": "string"
+		},
+		{
+			"key": "juan_customer_id",
+			"value": "3",
+			"type": "string"
+		},
+		{
+			"key": "jose_account_number",
+			"value": "478758",
+			"type": "string"
+		},
+		{
+			"key": "marianela_account_number",
+			"value": "225487",
+			"type": "string"
+		},
+		{
+			"key": "juan_account_number",
+			"value": "495878",
+			"type": "string"
+		},
+		{
+			"key": "marianela_account2_number",
+			"value": "496825",
+			"type": "string"
 		}
 	]
 }

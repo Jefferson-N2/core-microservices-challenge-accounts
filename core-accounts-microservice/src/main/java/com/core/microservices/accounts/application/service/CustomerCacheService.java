@@ -23,7 +23,6 @@ public class CustomerCacheService {
     @Value("${app.external-services.customers-service.timeout:3000}")
     private int timeout;
 
-    // --- Manejo de eventos Kafka ---
     public Mono<Void> handleCustomerCreated(CustomerEvent event) {
         return Mono.fromRunnable(() -> {
             CustomerInfo customerInfo = CustomerInfo.builder()

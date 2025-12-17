@@ -1,4 +1,4 @@
-package com.core.microservices.customers.infrastructure.config;
+package com.core.microservices.accounts.infrastructure.config;
 
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Contact;
@@ -13,8 +13,8 @@ public class OpenApiConfig {
     public OpenAPI customOpenAPI() {
         return new OpenAPI()
                 .info(new Info()
-                        .title("Customers Microservice API")
-                        .description("API for managing customers and persons")
+                        .title("Accounts API")
+                        .description("API for managing accounts, movements and reports")
                         .version("1.0.0")
                         .contact(new Contact()
                                 .name("Jefferson Noroña")));

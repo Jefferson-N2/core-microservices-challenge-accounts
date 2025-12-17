@@ -1,277 +1,261 @@
-# Core Microservices Challenge - Senior Level Implementation
+# Core Microservices Challenge - Caso Práctico
 
-> 📖 **[Versión en Español](README-ES.md)** | **[English Version](README.md)**
+> 📖 **[English Version](README-EN.md)** | **[Versión en Español](README.md)**
 
-This project implements a complete microservices architecture solution for account and customer management, designed for **Senior level** evaluation with all functionalities F1-F7.
+Solución completa de arquitectura de microservicios para gestión de cuentas y clientes, implementando todas las funcionalidades F1-F7.
 
-## 🏗️ Architecture Overview
+## 🏗️ Arquitectura
 
-### Microservices Architecture
-- **Customers Microservice** (Port 8080): Manages Customer and Person entities
-- **Accounts Microservice** (Port 8081): Manages Account and Movement entities
-- **Asynchronous Communication**: Kafka-based messaging between services
-- **Clean Architecture**: Hexagonal architecture with clear separation of concerns
+### Microservicios
+- **Customers Service** (Puerto 8080): Gestión de clientes y personas
+- **Accounts Service** (Puerto 8081): Gestión de cuentas y movimientos
+- **Comunicación asíncrona**: Kafka para eventos entre servicios
 
-### Technology Stack
-- **Java 21** with Spring Boot 3.5.8
-- **Spring WebFlux** for reactive programming
-- **MySQL** as primary database
-- **Apache Kafka** for asynchronous communication
-- **Docker & Docker Compose** for containerization
-- **OpenAPI 3.0** for Contract-First development
-- **JUnit 5 & Mockito** for testing
-- **H2 Database** for testing (in-memory)
-- **Lombok & MapStruct** for code generation
+### Tecnologías
+- **Java 21** + Spring Boot 3.5.8 + WebFlux
+- **MySQL** (Base de datos)
+- **Apache Kafka** (Comunicación asíncrona)
+- **Docker Compose** (Orquestación)
+- **OpenAPI 3.0** (Contract-First)
+- **JUnit 5** + Mockito (Testing)
 
-## 🚀 Quick Start
+## 🚀 Despliegue
 
-### Prerequisites
-- Docker and Docker Compose
-- Java 21 (for local development)
-- Maven 3.8+
+### Requisitos
+- Docker & Docker Compose
+- Java 21 (desarrollo local)
 
-### 1. Deploy with Docker (F7 - Containerized Deployment)
+### Pasos de Instalación
+
+#### 1. Clonar el Repositorio
 ```bash
-# Clone and navigate to project
+git clone <repository-url>
 cd core-microservices-challenge-accounts
+```
 
-# Start all services (MySQL, Kafka, Zookeeper, and both microservices)
-docker-compose up -d
+#### 2. Configurar Variables de Entorno
+```bash
+# Copiar archivo de configuración
+cp .env.example .env
 
-# Check services status
+# Opcional: Editar variables si es necesario
+# nano .env
+```
+
+#### 3. Inicializar Base de Datos
+```bash
+# El script BaseDatos.sql se ejecuta automáticamente
+# al iniciar MySQL por primera vez
+```
+
+#### 4. Desplegar Servicios
+```bash
+# Construir e iniciar todos los servicios
+docker-compose up --build -d
+
+# Verificar que todos los servicios estén corriendo
 docker-compose ps
+
+# Ver logs en tiempo real
+docker-compose logs -f
 ```
 
-### 2. Local Development
+#### 5. Verificar Despliegue
 ```bash
-# Start infrastructure only
-docker-compose up -d mysql kafka zookeeper
-
-# Run customers microservice
-cd core-customers-microservice
-mvn spring-boot:run
-
-# Run accounts microservice (in another terminal)
-cd core-accounts-microservice
-mvn spring-boot:run
+# Health check de servicios
+curl http://localhost:8080/actuator/health
+curl http://localhost:8081/actuator/health
 ```
 
-## 📋 Implemented Functionalities
+### URLs de Servicios
+- **Customers**: http://localhost:8080
+- **Accounts**: http://localhost:8081
+- **Swagger UI Customers**: http://localhost:8080/swagger-ui.html
+- **Swagger UI Accounts**: http://localhost:8081/swagger-ui.html
+- **MySQL**: localhost:3306 (admin/admin123)
+- **Kafka**: localhost:9092
 
-### ✅ F1: CRUD Operations
-- **Customers**: `/api/v1/customers` (GET, POST, PUT, DELETE)
-- **Accounts**: `/api/v1/accounts` (GET, POST, PUT, DELETE)
-- **Movements**: `/api/v1/movements` (GET, POST, PUT, DELETE)
-
-### ✅ F2: Movement Registration Business Rules
-- ✅ Movement value must be greater than zero
-- ✅ Debito movements subtract from available balance
-- ✅ Credito movements add to available balance
-- ✅ All transactions are properly registered
-
-### ✅ F3: Insufficient Balance Validation
-- ✅ Returns "Saldo no disponible" message when balance is insufficient
-- ✅ Proper error handling with HTTP 409 Conflict status
-
-### ✅ F4: Account Statement Reports
-- ✅ Endpoint: `/api/v1/reports/{client-id}?startDate=fecha&endDate=fecha`
-- ✅ Returns account balances and movement details
-- ✅ Supports both JSON and Excel formats
-
-### ✅ F5: Unit Tests
-- ✅ Comprehensive MovementService unit tests
-- ✅ Tests cover all business rules (F2, F3)
-- ✅ Mock-based testing with Mockito
-
-### ✅ F6: Integration Tests
-- ✅ End-to-end movement processing tests
-- ✅ WebTestClient for reactive testing
-- ✅ H2 in-memory database for testing
-
-### ✅ F7: Containerized Deployment
-- ✅ Docker containers for both microservices
-- ✅ Docker Compose orchestration
-- ✅ MySQL, Kafka, and Zookeeper containers
-
-## 🔧 API Documentation
-
-### Service URLs
-- **Customers Service**: http://localhost:8080
-- **Accounts Service**: http://localhost:8081
-- **Swagger UI**: 
-  - Customers: http://localhost:8080/swagger-ui.html
-  - Accounts: http://localhost:8081/swagger-ui.html
-
-### Sample API Calls
-
-#### Create Customer
+### Comandos Útiles
 ```bash
-curl -X POST http://localhost:8080/api/v1/customers \
-  -H "Content-Type: application/json" \
-  -d '{
-    "name": "Jose Lema",
-    "gender": "MALE",
-    "identification": "1234567890",
-    "address": "Otavalo sn y principal",
-    "phone": "098254785",
-    "password": "1234",
-    "status": true
-  }'
+# Parar servicios
+docker-compose down
+
+# Parar y limpiar volúmenes
+docker-compose down -v
+
+# Reconstruir servicios
+docker-compose build --no-cache
+
+# Ver logs de un servicio específico
+docker-compose logs -f customers-service
+docker-compose logs -f accounts-service
 ```
 
-#### Create Account
-```bash
-curl -X POST http://localhost:8081/api/v1/accounts \
-  -H "Content-Type: application/json" \
-  -d '{
-    "type": "Corriente",
-    "initialBalance": 2000.00,
-    "identification": "1234567890"
-  }'
+## 📋 Funcionalidades Implementadas
+
+| Funcionalidad | Descripción | Estado |
+|---------------|-------------|--------|
+| **F1** | CRUD Completo (Customers, Accounts, Movements) | ✅ |
+| **F2** | Reglas de negocio para movimientos | ✅ |
+| **F3** | Validación "Saldo no disponible" | ✅ |
+| **F4** | Reportes de estado de cuenta | ✅ |
+| **F5** | Pruebas unitarias | ✅ |
+| **F6** | Pruebas de integración | ✅ |
+| **F7** | Despliegue con Docker | ✅ |
+
+### Endpoints Principales
+```
+Customers Service (8080):
+├── GET    /api/v1/customers
+├── POST   /api/v1/customers
+├── PUT    /api/v1/customers/{id}
+└── DELETE /api/v1/customers/{id}
+
+Accounts Service (8081):
+├── GET    /api/v1/accounts
+├── POST   /api/v1/accounts
+├── POST   /api/v1/movements
+└── GET    /api/v1/reports/{client-id}
 ```
 
-#### Create Movement
-```bash
-curl -X POST http://localhost:8081/api/v1/movements \
-  -H "Content-Type: application/json" \
-  -d '{
-    "type": "Debito",
-    "value": 575.00,
-    "numberAccount": "478758",
-    "description": "Retiro de 575"
-  }'
+## 🔧 Casos de Uso
+
+### 1. Crear Cliente
+```json
+POST /api/v1/customers
+{
+  "name": "Jose Lema",
+  "gender": "MALE",
+  "identification": "1234567890",
+  "address": "Otavalo sn y principal",
+  "phone": "098254785",
+  "password": "1234",
+  "status": true
+}
 ```
 
-#### Generate Report
-```bash
-curl "http://localhost:8081/api/v1/reports/1?startDate=2024-01-01&endDate=2024-12-31&format=json"
+### 2. Crear Cuenta
+```json
+POST /api/v1/accounts
+{
+  "type": "Ahorros",
+  "initialBalance": 2000.00,
+  "identification": "1234567890"
+}
+```
+
+### 3. Registrar Movimiento
+```json
+POST /api/v1/movements
+{
+  "type": "Debito",
+  "value": 575.00,
+  "numberAccount": "478758",
+  "description": "Retiro de 575"
+}
+```
+
+### 4. Generar Reporte
+```
+GET /api/v1/reports/1?startDate=2024-01-01&endDate=2024-12-31&format=json
 ```
 
 ## 🧪 Testing
 
-### Run Unit Tests
 ```bash
-# Accounts microservice tests
-cd core-accounts-microservice
+# Ejecutar pruebas unitarias
 mvn test
 
-# Customers microservice tests
-cd core-customers-microservice
-mvn test
-```
-
-### Run Integration Tests
-```bash
+# Ejecutar pruebas de integración
 mvn test -Dtest=*IntegrationTest
 ```
 
-### Postman Collection
-Import `Core-Microservices-Challenge.postman_collection.json` for comprehensive API testing.
+### Colección Postman
+- Importar: `Core-Microservices-Challenge.postman_collection.json`
+- Incluye todos los casos de uso de la prueba técnica
 
-## 📊 Database Schema
+## 🔄 Comunicación Asíncrona
 
-The `BaseDatos.sql` file contains:
-- Complete MySQL schema with constraints and indexes
-- Sample data for testing all use cases
-- Proper foreign key relationships
+### Kafka Events
+```
+customer.events topic:
+├── CUSTOMER_CREATED
+├── CUSTOMER_UPDATED
+└── CUSTOMER_DELETED
+```
 
-## 🔄 Asynchronous Communication
+**Flujo**: Customers Service → Kafka → Accounts Service
 
-### Kafka Topics
-- `customer.events`: Customer lifecycle events
-- Producers in Customers service
-- Consumers in Accounts service
+## 📊 Base de Datos
 
-### Event Types
-- `customer.created`: New customer registration
-- `customer.updated`: Customer information changes
-- `customer.deleted`: Customer deactivation
+### Esquema
+- **BaseDatos.sql**: Schema completo con datos de prueba
+- **Entidades**: Person, Customer, Account, Movement
+- **Relaciones**: FK constraints y índices
 
-## 🏛️ Architecture Patterns
+### Configuración
+```yaml
+MySQL: localhost:3306/microservices_db
+User: admin / Password: admin123
+```
 
-### Hexagonal Architecture
-- **Domain**: Core business logic and entities
-- **Application**: Use cases and ports
-- **Infrastructure**: Adapters for external systems
+## 🏛️ Arquitectura
 
-### Design Patterns
-- Repository Pattern for data access
-- Adapter Pattern for external integrations
-- Factory Pattern for entity creation
-- Strategy Pattern for different report formats
+### Patrones Implementados
+- **Hexagonal Architecture**: Domain, Application, Infrastructure
+- **Repository Pattern**: Acceso a datos
+- **Adapter Pattern**: Integraciones externas
+- **Event-Driven**: Comunicación asíncrona
 
-## 🔒 Quality Assurance
+### Calidad de Código
+- **Clean Code**: Principios SOLID
+- **Contract-First**: OpenAPI specifications
+- **Reactive Programming**: Spring WebFlux
+- **Error Handling**: Global exception management
 
-### Code Quality
-- Lombok for boilerplate reduction
-- MapStruct for object mapping
-- SonarQube-ready code structure
-- Comprehensive logging with SLF4J
-
-### Error Handling
-- Global exception handling with `@RestControllerAdvice`
-- Proper HTTP status codes
-- Detailed error messages
-- Business rule validation
-
-### Performance & Scalability
-- Reactive programming with WebFlux
-- Database connection pooling
-- Async processing with Kafka
-- Stateless microservices design
-
-## 📈 Monitoring & Observability
+## 📈 Monitoreo
 
 ### Health Checks
-- Spring Boot Actuator endpoints
-- Database connectivity checks
-- Kafka connectivity monitoring
+```
+/actuator/health - Estado de servicios
+/actuator/metrics - Métricas de aplicación
+```
 
 ### Logging
-- Structured logging with correlation IDs
-- Business event logging
-- Error tracking and alerting
+- Structured logging con SLF4J
+- Correlation IDs para trazabilidad
+- Business events tracking
 
-## 🚀 Production Considerations
+## 🚀 Consideraciones de Producción
 
-### Security
-- Input validation with Bean Validation
-- SQL injection prevention with JPA
-- Password encryption (BCrypt)
-- CORS configuration
+### Seguridad
+- Validación de entrada (Bean Validation)
+- Prevención SQL injection (JPA)
+- Manejo seguro de contraseñas
 
-### Resilience
-- Circuit breaker patterns (ready for implementation)
-- Retry mechanisms
-- Timeout configurations
-- Graceful degradation
+### Escalabilidad
+- Stateless microservices
+- Connection pooling
+- Horizontal scaling ready
+- Load balancer compatible
 
-### Scalability
-- Horizontal scaling support
-- Load balancer ready
-- Database connection pooling
-- Kafka partitioning strategy
+## 📁 Estructura del Proyecto
 
-## 📝 Development Notes
+```
+core-microservices-challenge-accounts/
+├── core-customers-microservice/     # Servicio de clientes
+├── core-accounts-microservice/      # Servicio de cuentas
+├── docker-compose.yml              # Orquestación
+├── .env                           # Variables de entorno
+├── BaseDatos.sql                  # Schema de BD
+└── Core-Microservices-Challenge.postman_collection.json
+```
 
-### Code Standards
-- English naming conventions
-- Constructor-based dependency injection
-- Immutable DTOs where possible
-- Comprehensive JavaDoc documentation
+## 🎯 Entregables
 
-### Testing Strategy
-- **Unit Tests**: JUnit 5 + Mockito for business logic
-- **Integration Tests**: WebTestClient for API endpoints
-- **Reactive Testing**: StepVerifier for reactive streams
-- **Database Testing**: H2 in-memory database
-- **Contract Testing**: OpenAPI specification validation
-- **Performance Testing**: Ready for implementation
-
-## 🤝 Contributing
-
-This project follows clean code principles and SOLID design patterns. All contributions should maintain the established architecture and coding standards.
-
-## 📞 Support
-
-For technical questions or deployment issues, refer to the comprehensive logging and error messages provided by the application.
+- ✅ **Código fuente**: Repositorio Git completo
+- ✅ **OpenAPI**: Especificaciones YAML
+- ✅ **Postman**: Colección de pruebas
+- ✅ **Docker**: Despliegue containerizado
+- ✅ **Base de datos**: Script SQL completo
+- ✅ **Documentación**: README detallado
